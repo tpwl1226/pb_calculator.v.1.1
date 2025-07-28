@@ -1,23 +1,40 @@
 import pandas as pd
 import streamlit as st
 
-# ----------------- 1. 웹 UI 입력 -----------------
-st.title("🎨 PB 후보 추천기 (XFINE 최적화)")
-st.markdown("타겟 색소값과 주성분을 입력해 주세요.")
+# ----------------- 1. 사용자 입력 -----------------
+st.title("🎨 MATER PB 조색 계산기")
+st.markdown("타겟 색소값과 PB 사용량을 입력한 후 '계산하기' 버튼을 눌러주세요.")
 
-target = {
-    "INNO_TIO2": st.number_input("INNO_TIO2 (%)", value=30.44),
-    "CMJ": st.number_input("CMJ (%)", value=13.05),
-    "IOY": st.number_input("IOY (%)", value=28.80),
-    "IOR": st.number_input("IOR (%)", value=7.51),
-    "IOB": st.number_input("IOB (%)", value=5.22),
-    "PB_Usage": st.number_input("PB Usage (%)", value=23.00),
-    "XFINE_IOY": st.number_input("기초 XFINE IOY (%)", value=0.23),
-    "XFINE_IOR": st.number_input("기초 XFINE IOR (%)", value=0.33),
-    "XFINE_IOB": st.number_input("기초 XFINE IOB (%)", value=0.14)
-}
+with st.form("target_form"):
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        inno_tio2 = st.number_input("INNO TIO2 (%)", value=30.44, format="%.2f")
+        ioy = st.number_input("IOY (%)", value=28.80, format="%.2f")
+        xf_ioy = st.number_input("XFINE IOY (%)", value=0.23, format="%.2f")
+    with col2:
+        cmj = st.number_input("CMJ (%)", value=13.05, format="%.2f")
+        ior = st.number_input("IOR (%)", value=7.51, format="%.2f")
+        xf_ior = st.number_input("XFINE IOR (%)", value=0.33, format="%.2f")
+    with col3:
+        pb_usage = st.number_input("PB 사용량 (%)", value=23.00, format="%.2f")
+        iob = st.number_input("IOB (%)", value=5.22, format="%.2f")
+        xf_iob = st.number_input("XFINE IOB (%)", value=0.14, format="%.2f")
 
-st.markdown("---")
+    submitted = st.form_submit_button("계산하기")
+
+# ✔️ 계산기 동작 조건
+if submitted:
+    target = {
+        "INNO_TIO2": inno_tio2,
+        "CMJ": cmj,
+        "IOY": ioy,
+        "IOR": ior,
+        "IOB": iob,
+        "PB_Usage": pb_usage,
+        "XFINE_IOY": xf_ioy,
+        "XFINE_IOR": xf_ior,
+        "XFINE_IOB": xf_iob
+    }
 
 # ----------------- 2. PB 데이터 -----------------
 pb_data = [
